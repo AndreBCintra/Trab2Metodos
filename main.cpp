@@ -1,18 +1,13 @@
 #include <iostream>
-#include "./Utils.cpp"
+#include "./LUNormal.cpp"
+#include "./Matrix.cpp"
 
 using namespace std;
 
 int main(int argc, char const *argv[])
 {
-    Box Box1;
-    double volume = 0.0; 
-    
-    Box1.height = 5.0; 
-    Box1.length = 6.0; 
-    Box1.breadth = 7.0;
-
-    volume = Box1.height * Box1.length * Box1.breadth;
-    cout << "Volume of Box1 : " << volume <<endl;
+    /*  Recebe uma matrix A e um vetor f
+    e qual método deve ser usado para resolver o
+    sistema (Fatoração LU normal ou Fatoração LU descrito)*/
     return 0;
 }
