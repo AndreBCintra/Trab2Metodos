@@ -17,6 +17,14 @@ class Matrix {
             matrix[i] = new float[m_colSize];
       }
       void escolhe_pivo(int k, int *pivo, int *r) {
+         pv ← abs(A[k][k]);
+         r ← k;
+         for(int i=k+1;i<=m_rowSize-1;i++){
+            if(abs(A[i][k]) > pv){
+               pv ← abs(A[i][k]);
+               r ← i;
+            }
+         }
       }
    public:
       Matrix escalonarGauss() {
