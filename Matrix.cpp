@@ -30,11 +30,11 @@ class Matrix {
       Matrix escalonarGauss() {
          for (int k = 1; k <= m_rowSize - 1; ++k ) {
             int *pivo, *r;
-            escolhe_pivo(k, &pivo, &r);
+            escolhe_pivo(k, pivo, r);
             if (pivo == 0) {
                throw "A matriz e singular";
             }
-            if (r != k) {
+            if (*r != k) {
                permuta(pivo, k, r);
             }
             for (int i = k + 1; i <= m_rowSize; ++i) {
@@ -46,9 +46,9 @@ class Matrix {
             }
          }
       }
-      Matrix determinante() { // Recebe uma matriz triangular
+      int determinante() { // Recebe uma matriz triangular
          int det = 1;
-         for (int i = 0; i < m_rowSize) {
+         for (int i = 0; i < m_rowSize; ++i) {
             det = det * matrix[i][i];
          }
          return det;
