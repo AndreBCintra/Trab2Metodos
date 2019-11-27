@@ -1,28 +1,21 @@
 #include "./Matrix.cpp"
-
 class LUNormal {
     public:
         void solveLinearSystem(Matrix system) {
-            int* subst_suscessivas_mod(int m_rowSize, float** matrix, float* b){
-                float x[m_rowSize]=0, soma;
-                for(int i=0; i<=m_rowSize-1; i++){
-                    soma = 0;
-                    for(int j=0; j<=i-1; j++){
-                        soma = soma + matrix[i][j]*x[j];
-                    }
-                    x[i] = b[i] - soma;
-                }
-            }
-
-            int* subst_retroativa(int m_rowSize, float** matrix, float* y){
-                float x[m_rowSize] = y[m_rowSize]/matrix[m_rowSize][m_rowSize], soma; 
-                for(i=m_rowSize-2; i<=0; i--){
-                    soma = 0;
-                    for(j=i+1; j=m_rowSize-1){
-                        soma = soma + matrix[i][j]*x[j];
-                    }
-                x[i] = (y[i] - soma)/matrix[i][i];
-                }
-            }
+                 
+            int* lu_pivotacao_parcial(int m_rowSize, Matrix A, float* b){
+            	int p[m_rowSize], b[m_rowSize], blin[m_rowSize], x[m_rowSize], y[m_rowSize], r, pivo, i;
+	      	 	for(int i=0; i<=m_rowSize-2;){
+	      	 		p[i] = i;
+			    }
+            	A.escalonarGauss(p, pivo, r);
+            	for(i=0; i<=m_rowSize-1;)
+					r = p[i];
+					blin[i] = b[r];
+			}
+			y = subst_sucessivas_mod(m_rowSize, blin);
+			x = substituicoes_retroativas(m_rowSize, y);
+            	
+			
         }
 };
