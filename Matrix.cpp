@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <cmath>
 
 using namespace std;
 
@@ -21,20 +22,31 @@ class Matrix {
          *r = k;
          for(int i=k+1;i<=m_rowSize-1;i++){
             if(abs(matrix[i][k]) > *pivo){
-               pivo = abs(matrix[i][k]);
+               *pivo = abs(matrix[i][k]);
                *r = i;
             }
          }
       }
+      void permuta(int* p, float** matrix, int k, int r){
+         int aux = p[k];
+         p[k] = p[r];
+         p[r] = aux;
+         for(int j=0; j<=m_rowSize-1;j++){
+            aux = matrix[k][j];
+            matrix[k][j] = matrix[r][j];
+            matrix[r][j] = aux;
+         }
+      }
+      
    public:
       Matrix escalonarGauss() {
          for (int k = 1; k <= m_rowSize - 1; ++k ) {
             int *pivo, *r;
-            escolhe_pivo(k, pivo, r);
+            escolhe_pivo(k, &pivo, &r);
             if (pivo == 0) {
                throw "A matriz e singular";
             }
-            if (*r != k) {
+            if (r != k) {
                permuta(pivo, k, r);
             }
             for (int i = k + 1; i <= m_rowSize; ++i) {
@@ -46,9 +58,9 @@ class Matrix {
             }
          }
       }
-      int determinante() { // Recebe uma matriz triangular
+      Matrix determinante() { // Recebe uma matriz triangular
          int det = 1;
-         for (int i = 0; i < m_rowSize; ++i) {
+         for (int i = 0; i < m_rowSize) {
             det = det * matrix[i][i];
          }
          return det;
