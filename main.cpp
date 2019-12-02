@@ -151,9 +151,18 @@ public:
       return det;
    }
    void printArray(float *y, int size_y) {
-       cout << 'printing array y';
+       cout << "printing array y";
        for (int i = 0; i < size_y; i++) 
-            cout << y[i] + '\n';
+            cout << y[i] << "\n";
+   }
+   void printMatrix() {
+       cout << "Printing matrix \n";
+       for(int i = 0; i < m_colSize; i ++) {
+           for(int j = 0; j < m_rowSize;j ++) {
+               cout << matrix[i][j] << ' ';
+           }
+           cout << "\n";
+       }
    }
 };
 
@@ -167,6 +176,7 @@ class LUNormal {
 				p[i] = i;
 			}
 			A.escalonarGauss(p, &pivo, &r);
+            A.printMatrix();
 			for(i=0; i<=m_rowSize-1; i++) {
 				r = p[i];
 				blin[i] = b[r];
