@@ -1,3 +1,4 @@
+#include "./Matrix.cpp"
 class LUNormal {
     public:
 		int* lu_pivotacao_parcial(int m_rowSize, Matrix A, float* b){
