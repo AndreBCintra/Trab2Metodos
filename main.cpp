@@ -36,7 +36,7 @@ private:
          matrix[r][j] = aux;
       }
    }
-   int *subst_suscessivas_mod(int m_rowSize, float *b)
+   int *subst_sucessivas_mod(int m_rowSize, float *b)
    {
       float x[m_rowSize], soma;
       for (int i = 0; i <= m_rowSize - 1; i++)
@@ -73,13 +73,15 @@ class LUNormal {
 				p[i] = i;
 			}
 			A.escalonarGauss(p, &pivo, &r);
-			for(i=0; i<=m_rowSize-1;)
+			for(i=0; i<=m_rowSize-1;) {
 				r = p[i];
 				blin[i] = b[r];
+            }
+            y = A.subst_sucessivas_mod(m_rowSize, blin);
+			x = A.subst_retroativa(m_rowSize, y);
 		}
         void solveLinearSystem(Matrix system) {
-		//	y = subst_sucessivas_mod(m_rowSize, blin);
-		//	x = substituicoes_retroativas(m_rowSize, y);
+			
             	
 			
         }
@@ -196,7 +198,7 @@ int main(int argc, char const *argv[])
     for (int i = 0; i < N; i++){
       cin >> f[i];
     }
-    // LUNormal LU;
+    LUNormal LU;
     // LU.solveLinearSystem(A);
     // LUDescrito LDP;
     // LDP.solveLinearSystem(A);
