@@ -150,6 +150,11 @@ public:
       }
       return det;
    }
+   void printArray(float *y, int size_y) {
+       cout << 'printing array y';
+       for (int i = 0; i < size_y; i++) 
+            cout << y[i] + '\n';
+   }
 };
 
 class LUNormal {
