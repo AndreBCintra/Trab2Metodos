@@ -61,6 +61,20 @@
 	       
 	      
 	   public:
+		Matrix(int size){
+         		m_rowSize = size;
+         		m_colSize = size;
+         		matrix = new float*[m_rowSize];
+         		for (int i = 0; i < m_rowSize; i++){
+           			matrix[i] = new float[m_colSize];
+         		}
+      		}
+      		void addMatrix(int i, int j, float value){
+         		matrix[i][j] = value;
+      		}
+      		float getMatrix(int i, int j){
+         		return matrix[i][j]; 
+      		}
 	      Matrix escalonarGauss(int* p, pivo, r) {
 	      	 for (int k = 0; k <= m_rowSize - 2; ++k ) {
 	            escolhe_pivo(k, &pivo, &r);
