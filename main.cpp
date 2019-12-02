@@ -36,9 +36,19 @@ private:
          matrix[r][j] = aux;
       }
    }
-   int *subst_sucessivas_mod(int m_rowSize, float *b)
+public:
+   Matrix(int rowSize,
+                  int colSize)
    {
-      float x[m_rowSize], soma;
+      m_rowSize = rowSize;
+      m_colSize = colSize;
+      matrix = new float *[m_rowSize];
+      for (int i = 0; i < m_rowSize; ++i)
+         matrix[i] = new float[m_colSize];
+   }
+      void subst_sucessivas_mod(float *x, float *b)
+   {
+      float soma;
       for (int i = 0; i <= m_rowSize - 1; i++)
       {
          soma = 0;
@@ -50,52 +60,19 @@ private:
       }
    }
 
-   int *subst_retroativa(int m_rowSize, float *y)
+   void subst_retroativa(float *x, float *y)
    {
-      float x[m_rowSize], soma;
+      float soma;
       x[m_rowSize -1] = y[m_rowSize - 1] / matrix[m_rowSize - 1][m_rowSize - 1];
-      for (int i = m_rowSize - 2; i <= 0; i--)
+      for (int i = m_rowSize - 2; i >= 0; i--)
       {
          soma = 0;
-         for (int j = i + 1; j = m_rowSize - 1; j++ )
+         for (int j = i + 1; j <= m_rowSize - 1; j++ )
          {
             soma = soma + matrix[i][j] * x[j];
          }
          x[i] = (y[i] - soma) / matrix[i][i];
       }
-   }
-
-class LUNormal {
-    public:
-		int* lu_pivotacao_parcial(int m_rowSize, Matrix A, float* b){
-			int p[m_rowSize], blin[m_rowSize], x[m_rowSize], y[m_rowSize], r, pivo, i;
-			for(int i=0; i<=m_rowSize-2;){
-				p[i] = i;
-			}
-			A.escalonarGauss(p, &pivo, &r);
-			for(i=0; i<=m_rowSize-1;) {
-				r = p[i];
-				blin[i] = b[r];
-            }
-            y = A.subst_sucessivas_mod(m_rowSize, blin);
-			x = A.subst_retroativa(m_rowSize, y);
-		}
-        void solveLinearSystem(Matrix system) {
-			
-            	
-			
-        }
-};
-
-public:
-   Matrix(int rowSize,
-                  int colSize)
-   {
-      m_rowSize = rowSize;
-      m_colSize = colSize;
-      matrix = new float *[m_rowSize];
-      for (int i = 0; i < m_rowSize; ++i)
-         matrix[i] = new float[m_colSize];
    }
    void deleteMatrix(void)
    {
@@ -175,6 +152,27 @@ public:
    }
 };
 
+class LUNormal {
+    public:
+		float* lu_pivotacao_parcial(Matrix A, float* b, float* x){
+            int m_rowSize = A.getSize();
+			int p[m_rowSize], r, pivo, i;
+            float blin[m_rowSize];
+			for(int i=0; i<=m_rowSize-2; i++){
+				p[i] = i;
+			}
+			A.escalonarGauss(p, &pivo, &r);
+			for(i=0; i<=m_rowSize-1; i++) {
+				r = p[i];
+				blin[i] = b[r];
+            }
+            float y[m_rowSize];
+            A.subst_sucessivas_mod(y, blin);
+			A.subst_retroativa(x, y);
+            return x;
+		}
+};
+
 
 int main(int argc, char const *argv[])
 {
@@ -199,6 +197,11 @@ int main(int argc, char const *argv[])
       cin >> f[i];
     }
     LUNormal LU;
+    float x[N];
+    LU.lu_pivotacao_parcial(A, f, x);
+    for (int i = 0; i < N; i++) {
+        cout << x[i] << '\n';
+    }
     // LU.solveLinearSystem(A);
     // LUDescrito LDP;
     // LDP.solveLinearSystem(A);
