@@ -104,6 +104,7 @@ public:
 class LUNormal {
     public:
         void solveLinearSystem(Matrix A, float* b) {
+          std::cout << "---------------------------" << endl << "Metodo LU:" << endl;
           Matrix L(A.getSize());
           Matrix U(A.getSize());
           A.escalonarGauss(&L, &U, b);
@@ -124,20 +125,72 @@ class LUNormal {
             d[i] = d[i]/U.getMatrix(i, i);
           }
           for (int i = 0; i < A.getSize(); i++){
-            std::cout << d[i] << endl;
+            std::cout << "d" << i << " = " << d[i];
+            if (abs(d[i]) < 2){
+              std::cout << "   SEGURO" << endl;
+            }
+            else{
+              std::cout << "   EXPLODE" << endl;
+            }
           }
         }
 };
 
-/*class LUDescrito {
-  public:
-    void solveLinearSystem(Matrix A, float* b){
-      Matrix L(A.getSize());
-      Matrix U(A.getSize());
-      A.escalonarGauss(&L, &U, b);
-      Matrix
-    }
-}*/
+class LUDescrito {
+    public:
+        void solveLinearSystem(Matrix A, float* b){
+          std::cout << "---------------------------" << endl << "Metodo LDP:";
+          Matrix L(A.getSize());
+          Matrix U(A.getSize());
+          A.escalonarGauss(&L, &U, b);
+          Matrix D(A.getSize());
+          Matrix P(A.getSize());
+          float z[A.getSize()];
+          float y[A.getSize()];
+          float d[A.getSize()];
+          for (int i = 0; i < A.getSize(); i++){
+            for (int j = 0; j < A.getSize(); j++){
+              P.addMatrix(i, j, U.getMatrix(i, j));
+              D.addMatrix(i, j, 0);
+              if (i == j){
+                D.addMatrix(i, j, U.getMatrix(i, j));
+              }
+            }
+          }
+          for (int i = 0; i < A.getSize(); i++){
+            for (int j = i; j < A.getSize(); j++){
+              P.addMatrix(i, j, P.getMatrix(i, j)/D.getMatrix(i, i));
+            }
+          }
+          for (int i = 0; i < A.getSize(); i++){ // calculando o vetor z
+            z[i] = b[i];
+            for (int j = i-1; j >= 0; j--){
+              z[i] = z[i] - (z[j]*L.getMatrix(i, j));
+            }
+            z[i] = z[i]/L.getMatrix(i, i);
+          }
+          std::cout << endl;
+          for (int i = 0; i < A.getSize(); i++){ // calculando o vetor y
+            y[i] = z[i]/D.getMatrix(i, i);
+          }
+          for (int i = A.getSize()-1; i >= 0; i--){ // calculando o vetor d
+            d[i] = y[i];
+            for (int j = A.getSize(); j > i; j--){
+              d[i] = d[i] - (d[j]*P.getMatrix(i, j));
+            }
+            d[i] = d[i]/P.getMatrix(i, i);
+          }
+          for (int i = 0; i < A.getSize(); i++){
+            std::cout << "d" << i << " = " << d[i];
+            if (abs(d[i]) < 2){
+              std::cout << "   SEGURO" << endl;
+            }
+            else{
+              std::cout << "   EXPLODE" << endl;
+            }
+          }
+        }
+};
 
 
 int main(int argc, char const *argv[])
@@ -162,7 +215,14 @@ int main(int argc, char const *argv[])
     for (int i = 0; i < N; i++){
       cin >> f[i];
     }
+    float b[N];
+    for (int i = 0; i < N; i++){
+      b[i] = f[i];
+    }
     LUNormal LU;
     LU.solveLinearSystem(A, f);
+    LUDescrito LDP;
+    LDP.solveLinearSystem(A, b);
+    std::cout << "---------------------------"
     return 0;
 }
